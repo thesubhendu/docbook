@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePatientRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StorePatientRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,9 @@ class StorePatientRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'date_of_birth' => ['required','date_format:Y-m-d'],
+            'gender'=> [ Rule::in(['male', 'female', 'other'])],
+
         ];
     }
 }

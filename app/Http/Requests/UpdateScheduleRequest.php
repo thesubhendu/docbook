@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateScheduleRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateScheduleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+       return true;
     }
 
     /**
@@ -22,7 +23,9 @@ class UpdateScheduleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+        'available_from' => ['required','date_format:H:i'],
+        'available_to' => ['required','date_format:H:i'],
+        'day_of_week' => ['required', Rule::in(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])],
         ];
     }
 }

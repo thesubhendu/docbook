@@ -13,7 +13,15 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        //
+        if(request()->filled('specialization_id')) {
+            request()->validate(['specialization_id'=>'exists:specializations,id']);
+
+            $doctors = Doctor::where('specialization_id', request('specialization_id'))->get();
+        }else {
+            $doctors = Doctor::all();
+        }
+
+        return $doctors;
     }
 
     /**
@@ -21,7 +29,13 @@ class DoctorController extends Controller
      */
     public function store(StoreDoctorRequest $request)
     {
-        //
+        if($request->user()->cannot('create', Doctor::class)) {
+            return response()->json(['message'=>'Unauthorized'], 403);
+        }
+
+        $request->user()->doctor()->firstOrCreate(['user_id'=>auth()->id()],$request->validated());
+
+        return response()->json(['message'=>'Doctor Created'], 201);
     }
 
     /**
@@ -29,7 +43,7 @@ class DoctorController extends Controller
      */
     public function show(Doctor $doctor)
     {
-        //
+        return response()->json(['doctor'=> $doctor->load('schedules')]);
     }
 
     /**
@@ -37,7 +51,13 @@ class DoctorController extends Controller
      */
     public function update(UpdateDoctorRequest $request, Doctor $doctor)
     {
-        //
+        if($request->user()->cannot('update', $doctor)) {
+            return response()->json(['message'=>'Unauthorized'], 403);
+        }
+
+        $doctor->update($request->validated());
+
+        return response()->json(['message'=>'Doctor Updated'], 201);
     }
 
     /**
@@ -45,6 +65,11 @@ class DoctorController extends Controller
      */
     public function destroy(Doctor $doctor)
     {
-        //
+        if(auth()->user()->cannot('delete', $doctor)) {
+            return response()->json(['message'=>'Unauthorized'], 403);
+        }
+
+        $doctor->delete();
+        return response()->json(['message'=>'Doctor Deleted'], 201);
     }
 }

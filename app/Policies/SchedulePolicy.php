@@ -29,7 +29,7 @@ class SchedulePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return !empty($user->doctor);
     }
 
     /**
@@ -37,7 +37,7 @@ class SchedulePolicy
      */
     public function update(User $user, Schedule $schedule): bool
     {
-        //
+        return !empty($user->doctor) && $user->doctor->id === $schedule->doctor_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class SchedulePolicy
      */
     public function delete(User $user, Schedule $schedule): bool
     {
-        //
+        return !empty($user->doctor) && $user->doctor->id === $schedule->doctor_id;
     }
 
     /**

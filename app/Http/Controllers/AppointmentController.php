@@ -13,7 +13,11 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        //
+        if(auth()->user()->user_type === 'patient') {
+            return auth()->user()->patient->appointments;
+        }
+
+        return auth()->user()->doctor->appointments;
     }
 
     /**
@@ -21,7 +25,16 @@ class AppointmentController extends Controller
      */
     public function store(StoreAppointmentRequest $request)
     {
-        //
+        if($request->user()->cannot('create', Appointment::class)){
+            return response()->json('Unauthorized', 403);
+        }
+
+        $data = $request->validated();
+        $data['status'] = 'completed';
+
+        $request->user()->patient->appointments()->create($data);
+
+        return response()->json(['message'=>'Appointment Created'], 201);
     }
 
     /**

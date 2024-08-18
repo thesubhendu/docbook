@@ -29,7 +29,7 @@ class AppointmentPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->user_type === 'patient' && !empty($user->patient);
     }
 
     /**

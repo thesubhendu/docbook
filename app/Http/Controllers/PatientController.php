@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Requests\UpdatePatientRequest;
+use App\Models\Doctor;
 use App\Models\Patient;
 
 class PatientController extends Controller
@@ -21,7 +22,13 @@ class PatientController extends Controller
      */
     public function store(StorePatientRequest $request)
     {
-        //
+        if($request->user()->cannot('create', Patient::class)) {
+            return response()->json(['message'=>'Unauthorized'], 403);
+        }
+
+        $request->user()->patient()->firstOrCreate(['user_id'=>auth()->id()],$request->validated());
+
+        return response()->json(['message'=>'Patient Created'], 201);
     }
 
     /**

@@ -22,7 +22,8 @@ class UpdateDoctorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'specialization_id' => ['required', 'exists:specializations,id'],
+            'bio' => [ 'string', 'max:255'],
         ];
     }
 }
