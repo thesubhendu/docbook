@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDoctorRequest;
 use App\Http\Requests\UpdateDoctorRequest;
+use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
+use Gate;
+use Illuminate\Http\Response;
 
 class DoctorController extends Controller
 {
@@ -13,15 +16,18 @@ class DoctorController extends Controller
      */
     public function index()
     {
+        $query = Doctor::query()->with('user');
+
         if(request()->filled('specialization_id')) {
             request()->validate(['specialization_id'=>'exists:specializations,id']);
-
-            $doctors = Doctor::where('specialization_id', request('specialization_id'))->get();
+            $doctors = $query->where('specialization_id', request('specialization_id'))->get();
         }else {
-            $doctors = Doctor::all();
+            $doctors = $query->get();
         }
 
-        return $doctors;
+        return  DoctorResource::collection($doctors)
+            ->additional(['message'=>'Retrieved Successfully'])
+            ;
     }
 
     /**
@@ -29,13 +35,15 @@ class DoctorController extends Controller
      */
     public function store(StoreDoctorRequest $request)
     {
-        if($request->user()->cannot('create', Doctor::class)) {
-            return response()->json(['message'=>'Unauthorized'], 403);
-        }
+        Gate::authorize('create', Doctor::class);
 
-        $request->user()->doctor()->firstOrCreate(['user_id'=>auth()->id()],$request->validated());
+        $doctor = $request->user()->doctor()->firstOrCreate(['user_id'=>auth()->id()], $request->validated());
 
-        return response()->json(['message'=>'Doctor Created'], 201);
+        return (new DoctorResource($doctor))
+            ->additional(['message'=>'Created Successfully'])
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED)
+            ;
     }
 
     /**
@@ -43,7 +51,7 @@ class DoctorController extends Controller
      */
     public function show(Doctor $doctor)
     {
-        return response()->json(['doctor'=> $doctor->load('schedules')]);
+        return new DoctorResource($doctor);
     }
 
     /**
@@ -51,13 +59,12 @@ class DoctorController extends Controller
      */
     public function update(UpdateDoctorRequest $request, Doctor $doctor)
     {
-        if($request->user()->cannot('update', $doctor)) {
-            return response()->json(['message'=>'Unauthorized'], 403);
-        }
+        Gate::authorize('update', $doctor);
 
-        $doctor->update($request->validated());
+         $doctor->update($request->validated());
 
-        return response()->json(['message'=>'Doctor Updated'], 201);
+        return (new DoctorResource($doctor))
+        ->additional(['message'=>'Updated Successfully']);
     }
 
     /**
@@ -65,11 +72,10 @@ class DoctorController extends Controller
      */
     public function destroy(Doctor $doctor)
     {
-        if(auth()->user()->cannot('delete', $doctor)) {
-            return response()->json(['message'=>'Unauthorized'], 403);
-        }
+        Gate::authorize('delete', $doctor);
 
         $doctor->delete();
-        return response()->json(['message'=>'Doctor Deleted'], 201);
+
+        return response()->json(['message'=>'Doctor Deleted']);
     }
 }

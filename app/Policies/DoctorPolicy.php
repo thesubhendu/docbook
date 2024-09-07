@@ -38,7 +38,7 @@ class DoctorPolicy
      */
     public function update(User $user, Doctor $doctor): bool
     {
-         return $user->user_type === 'doctor' && $user->id === $doctor->id;
+         return $user->user_type === 'doctor' && $user->id === $doctor->user_id;
     }
 
     /**
@@ -46,7 +46,7 @@ class DoctorPolicy
      */
     public function delete(User $user, Doctor $doctor): bool
     {
-        return $user->user_type === 'doctor' && $user->id === $doctor->id;
+        return $user->user_type === 'doctor' && $user->id === $doctor->user_id;
 
     }
 
