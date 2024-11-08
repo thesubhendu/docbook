@@ -19,6 +19,8 @@ class DoctorResource extends JsonResource
             'name' => $this->user->name,
             'specialization' => $this->specialization->name,
             'bio' => $this->bio,
+            'availability'=> $this->availability,
+            'exceptions'=> $this->exceptions,
         ];
     }
 }

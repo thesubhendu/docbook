@@ -15,10 +15,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-//        User::factory()->create([
-//            'name' => 'Test User',
-//            'email' => 'test@example.com',
-//        ]);
+        User::factory()->create([
+            'name' => 'Patient',
+            'email' => 'pat@docbook.test',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Doctor',
+            'user_type' => 'doctor',
+            'email' => 'doc@docbook.test',
+        ]);
 
         $specialty = ['ICU','Urology','Cardio','Physio','Ortho','Dermatologist','ENT','General'];
 

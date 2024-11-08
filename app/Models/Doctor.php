@@ -13,6 +13,11 @@ class Doctor extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+      'availability' => 'array',
+      'exceptions' => 'array',
+    ];
+
     public function schedules() : HasMany
     {
         return $this->hasMany(Schedule::class,'doctor_id');

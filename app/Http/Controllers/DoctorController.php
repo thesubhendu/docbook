@@ -18,10 +18,10 @@ class DoctorController extends Controller
     {
         $query = Doctor::query()->with('user');
 
-        if(request()->filled('specialization_id')) {
+        if (request()->filled('specialization_id')) {
             request()->validate(['specialization_id'=>'exists:specializations,id']);
             $doctors = $query->where('specialization_id', request('specialization_id'))->get();
-        }else {
+        } else {
             $doctors = $query->get();
         }
 

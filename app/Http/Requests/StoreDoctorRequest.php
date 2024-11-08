@@ -24,6 +24,7 @@ class StoreDoctorRequest extends FormRequest
         return [
             'specialization_id' => ['required', 'exists:specializations,id'],
             'bio' => [ 'string', 'max:255'],
+            'availability' => [ 'array', 'required_array_keys:schedules'],
         ];
     }
 }
