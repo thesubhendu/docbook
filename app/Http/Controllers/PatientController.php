@@ -3,55 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePatientRequest;
-use App\Http\Requests\UpdatePatientRequest;
-use App\Models\Doctor;
+use App\Http\Resources\PatientResource;
 use App\Models\Patient;
 
 class PatientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePatientRequest $request)
     {
-        if($request->user()->cannot('create', Patient::class)) {
+        if ($request->user()->cannot('create', Patient::class)) {
             return response()->json(['message'=>'Unauthorized'], 403);
         }
 
-        $request->user()->patient()->firstOrCreate(['user_id'=>auth()->id()],$request->validated());
+        $patient = $request->user()->patient()->firstOrCreate(['user_id'=>auth()->id()], $request->validated());
 
-        return response()->json(['message'=>'Patient Created'], 201);
+        return (new PatientResource($patient))->additional(['message'=>'Patient Created Successfully']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Patient $patient)
+    public function update(StorePatientRequest $request)
     {
-        //
+        $patient = $request->user()->patient;
+        $patient->update($request->validated());
+
+        return (new PatientResource($patient))->additional(['message'=>'Patient Updated Successfully']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePatientRequest $request, Patient $patient)
+    public function show()
     {
-        //
+        $patient = auth()->user()->patient;
+        return (new PatientResource($patient))->additional(['message'=>'Patient Updated Successfully']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Patient $patient)
+    public function destroy()
     {
-        //
+        $patient = auth()->user()->patient;
+        $patient->delete();
+
+        return response()->json(['message'=>'Patient Deleted Successfully']);
     }
 }

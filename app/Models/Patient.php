@@ -15,4 +15,9 @@ class Patient extends Model
     {
         return $this->hasMany(Appointment::class, 'patient_id');
     }
+
+    public function activeAppointments()
+    {
+        return $this->hasMany(Appointment::class, 'patient_id')->where('status','completed');
+    }
 }

@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
@@ -39,6 +41,14 @@ class AppServiceProvider extends ServiceProvider
             );
 
             return config('app.frontend_url')."?verification_url=".$verificationUrl;
+        });
+
+        Gate::define('doctor', function (User $user) {
+              return $user->user_type === 'doctor';
+        });
+
+        Gate::define('patient', function (User $user) {
+            return $user->user_type === 'patient';
         });
 
     }

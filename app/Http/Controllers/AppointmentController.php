@@ -12,13 +12,16 @@ class AppointmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function __invoke()
     {
-        if(auth()->user()->user_type === 'patient') {
-            return auth()->user()->patient->appointments;
+        $loggedInUserType =  auth()->user()->user_type;
+        $loggedInUser = auth()->user();
+
+        if ( $loggedInUserType === 'patient') {
+            return AppointmentResource::collection($loggedInUser->patient->activeAppointments);
         }
 
-        return AppointmentResource::collection(auth()->user()->doctor->appointments);
+        return AppointmentResource::collection($loggedInUser->doctor->activeAppointments);
     }
 
 }

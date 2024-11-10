@@ -33,4 +33,9 @@ class Doctor extends Model
     {
         return $this->hasMany(Appointment::class, 'doctor_id');
     }
+
+    public function activeAppointments()
+    {
+        return $this->hasMany(Appointment::class, 'patient_id')->where('status','completed');
+    }
 }
