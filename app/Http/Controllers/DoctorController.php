@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDoctorRequest;
-use App\Http\Requests\UpdateDoctorRequest;
 use App\Http\Resources\DoctorResource;
 use App\Models\Doctor;
 use Gate;
@@ -11,9 +10,7 @@ use Illuminate\Http\Response;
 
 class DoctorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $query = Doctor::query()->with('user');
@@ -30,9 +27,6 @@ class DoctorController extends Controller
             ;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreDoctorRequest $request)
     {
         Gate::authorize('create', Doctor::class);
@@ -46,9 +40,6 @@ class DoctorController extends Controller
             ;
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Doctor $doctor)
     {
         return new DoctorResource($doctor);
@@ -57,7 +48,7 @@ class DoctorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDoctorRequest $request, Doctor $doctor)
+    public function update(StoreDoctorRequest $request, Doctor $doctor)
     {
         Gate::authorize('update', $doctor);
 

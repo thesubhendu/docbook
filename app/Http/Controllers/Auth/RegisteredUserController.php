@@ -36,6 +36,10 @@ class RegisteredUserController extends Controller
             'user_type'=> $request->user_type
         ]);
 
+        if ($user->user_type == 'patient') {
+            $user->patient()->create();
+        }
+
         event(new Registered($user));
 
         return response()->json(['message'=>'User Created','user'=>$user], 201);

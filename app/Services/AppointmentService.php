@@ -24,9 +24,8 @@ class AppointmentService
 
         // checking if doctor is on leave
         if (array_key_exists($appointmentDateTime->toDateString(), $doctor->exceptions)) {
-            // check if slot falls within
             $dayOff = $doctor->exceptions[$appointmentDateTime->toDateString()];
-            if($dayOff == null) { // doc is off whole day
+            if ($dayOff == null) {
                 return false;
             }
 
@@ -40,7 +39,6 @@ class AppointmentService
             }
         }
 
-        // if all good check if slot is available
         $doctorSchedule = $doctor->availability[$appointmentDateTime->dayName];
 
         foreach ($doctorSchedule as $schedule) {
@@ -48,13 +46,13 @@ class AppointmentService
             $fromTime = $appointmentDateTime->copy()->setTimeFromTimeString($from);
             $toTime = $appointmentDateTime->copy()->setTimeFromTimeString($to);
             if ($appointmentDateTime->between($fromTime, $toTime)) {
-                // Now check if the slot is already booked
+                // Checking if the slot is already booked
                 $isSlotBooked = Appointment::where('doctor_id', $doctor->id)
                     ->where('appointment_date', $appointmentDateTime)
                     ->exists();
 
                 if ($isSlotBooked) {
-                    return false; // Slot already booked
+                    return false;
                 }
                 return true;
             }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -18,11 +19,6 @@ class Doctor extends Model
       'exceptions' => 'array',
     ];
 
-    public function schedules() : HasMany
-    {
-        return $this->hasMany(Schedule::class,'doctor_id');
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -31,5 +27,10 @@ class Doctor extends Model
     public function specialization(): BelongsTo
     {
         return $this->belongsTo(Specialization::class);
+    }
+
+    public function appointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class, 'doctor_id');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Requests\UpdateAppointmentRequest;
+use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 
 class AppointmentController extends Controller
@@ -17,7 +18,7 @@ class AppointmentController extends Controller
             return auth()->user()->patient->appointments;
         }
 
-        return auth()->user()->doctor->appointments;
+        return AppointmentResource::collection(auth()->user()->doctor->appointments);
     }
 
 }
