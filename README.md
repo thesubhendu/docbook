@@ -2,9 +2,6 @@
 This API provides endpoints for registering, logging in, logging out, creating, retrieving, updating, and deleting doctors, schedules, and appointments.
 Patients can register, choose doctor and book available slots for appointment.
 
-## Endpoints
-
-
 ## Installation
 
 1. Clone the repository
@@ -14,3 +11,5 @@ Patients can register, choose doctor and book available slots for appointment.
 5. Run `php artisan migrate`
 6. Run `php artisan serve` to start the development server
 
+## API Documentation at 
+After installation visit `/api-docs` to view API documentation
