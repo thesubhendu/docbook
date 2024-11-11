@@ -10,7 +10,7 @@ use App\Models\Appointment;
 class AppointmentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Show active appointments of the logged in user
      */
     public function __invoke()
     {

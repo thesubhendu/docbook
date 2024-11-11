@@ -58,7 +58,6 @@ class AppointmentService
             }
         }
 
-
         return false;
     }
 

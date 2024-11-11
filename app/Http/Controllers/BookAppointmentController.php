@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAppointmentRequest;
 use App\Services\AppointmentService;
-
+/**
+ * @tags Book Appointment
+ *
+ * Book an appointment
+ */
 class BookAppointmentController extends Controller
 {
     public function __construct(
@@ -13,6 +17,9 @@ class BookAppointmentController extends Controller
     {
     }
 
+    /**
+     * Book an appointment
+     */
     public function __invoke(StoreAppointmentRequest $request)
     {
         $data = $request->validated();
