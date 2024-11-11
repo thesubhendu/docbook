@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
+/**
+ * @tags Register
+ *
+ */
 class RegisteredUserController extends Controller
 {
     /**
