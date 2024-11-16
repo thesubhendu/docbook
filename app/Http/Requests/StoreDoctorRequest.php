@@ -28,6 +28,7 @@ class StoreDoctorRequest extends FormRequest
             // Accepted JSON format for availability -> { "Monday": ["09:00-12:00", "14:00-18:00"], "Wednesday": ["10:00-13:00"] }
             'availability' => [
                 'array',
+                'required',
                 function ($attribute, $value, $fail) {
                     foreach ($value as $day => $slots) {
                         if (!in_array($day, ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'])) {

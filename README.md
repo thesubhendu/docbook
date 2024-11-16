@@ -13,3 +13,35 @@ Patients can register, choose doctor and book available slots for appointment.
 
 ## API Documentation at 
 After installation visit `/docs/api` to view API documentation
+
+## Database Design
+### users
+- id
+- name
+- email
+- password
+- user_type enum ('doctor', 'patient')
+
+### doctors
+- id
+- doctor_id
+- specialization_id
+- bio text
+
+### patients
+- id
+- user_id
+- date_of_birth
+- gender
+
+### specialization
+- id
+- name
+
+### appointments
+- id
+- doctor_id
+- patient_id
+- appointment_date
+- reason text
+- status enum ('pending','completed', 'cancelled')
