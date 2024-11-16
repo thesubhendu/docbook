@@ -8,7 +8,7 @@ Patients can register, choose doctor and book available slots for appointment.
 2. Run `composer install`
 3. Copy `.env.example` to `.env` and fill in the required fields
 4. Run `php artisan key:generate`
-5. Run `php artisan migrate`
+5. Run `php artisan migrate:fresh  --seed`
 6. Run `php artisan serve` to start the development server
 
 ## API Documentation at 
