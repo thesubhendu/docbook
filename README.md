@@ -12,4 +12,4 @@ Patients can register, choose doctor and book available slots for appointment.
 6. Run `php artisan serve` to start the development server
 
 ## API Documentation at 
-After installation visit `/api-docs` to view API documentation
+After installation visit `/docs/api` to view API documentation
